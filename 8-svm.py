@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from sklearn import datasets
 from sklearn.model_selection import train_test_split
 from sklearn.svm import SVC
-from sklearn import metrics
+from sklearn.metrics import accuracy_score
 
 iris = datasets.load_iris()
 X = iris.data[:, :2] 
@@ -20,6 +20,9 @@ y_pred = svm.predict(X_test)
 print("Accuracy:", accuracy_score(y_test, y_pred))
 
 plt.scatter(X[:, 0], X[:, 1], c=y, cmap=plt.cm.Paired, edgecolors='k')
+xlim, ylim = plt.gca().get_xlim(), plt.gca().get_ylim()
+xx, yy = np.meshgrid(np.linspace(*xlim, 30), np.linspace(*ylim, 30))
+Z = svm.decision_function(np.c_[xx.ravel(), yy.ravel()]).reshape(xx.shape)
 
 plt.contour(xx, yy, Z, colors='k', levels=[-1, 0, 1], alpha=0.5, linestyles=['--', '-', '--'])
 plt.scatter(svm.support_vectors_[:, 0], svm.support_vectors_[:, 1], s=100, facecolors='none', edgecolors='k')
